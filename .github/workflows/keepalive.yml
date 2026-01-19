@@ -6,8 +6,10 @@ on:
     - cron: '0 0 */50 * *'
   workflow_dispatch:
 
+# ⚠️⚠️⚠️ 这一段是你之前缺少的关键授权代码 ⚠️⚠️⚠️
 permissions:
   contents: write
+# ⚠️⚠️⚠️ 没有这一段，一定会报错 blocked ⚠️⚠️⚠️
 
 jobs:
   cronjob-based-github-action:
@@ -16,6 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # 强制指定你的分支名为 master
+          # 强制指定分支为 master (针对你的仓库)
           ref: master
+          
       - uses: gautamkrishnar/keepalive-workflow@v2
+        with:
+          # 强制使用 GITHUB_TOKEN 进行提交
+          use_github_token: true
