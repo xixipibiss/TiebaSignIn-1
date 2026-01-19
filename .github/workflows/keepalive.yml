@@ -2,9 +2,14 @@ name: Keepalive Workflow
 
 on:
   schedule:
-    # 每 50 天运行一次 (避开 60 天限制)
+    # 每 50 天运行一次
     - cron: '0 0 */50 * *'
   workflow_dispatch:
+
+# --- 关键修改：显式申请写权限 ---
+permissions:
+  contents: write
+# -----------------------------
 
 jobs:
   cronjob-based-github-action:
