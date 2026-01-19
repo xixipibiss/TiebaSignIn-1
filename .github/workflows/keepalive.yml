@@ -6,10 +6,8 @@ on:
     - cron: '0 0 */50 * *'
   workflow_dispatch:
 
-# --- 关键修改：显式申请写权限 ---
 permissions:
   contents: write
-# -----------------------------
 
 jobs:
   cronjob-based-github-action:
@@ -17,4 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 强制指定你的分支名为 master
+          ref: master
       - uses: gautamkrishnar/keepalive-workflow@v2
