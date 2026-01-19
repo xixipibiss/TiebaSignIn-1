@@ -2,26 +2,26 @@ name: Keepalive Workflow
 
 on:
   schedule:
-    # 每 50 天运行一次
-    - cron: '0 0 */50 * *'
-  workflow_dispatch:
+    - cron: '0 0 */50 * *' # 每50天运行一次
+  workflow_dispatch: # 允许你手动点击运行
 
-# ⚠️⚠️⚠️ 这一段是你之前缺少的关键授权代码 ⚠️⚠️⚠️
 permissions:
   contents: write
-# ⚠️⚠️⚠️ 没有这一段，一定会报错 blocked ⚠️⚠️⚠️
 
 jobs:
-  cronjob-based-github-action:
-    name: Keepalive Workflow
+  auto-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # 1. 下载代码 (必须指定 master 分支)
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          # 强制指定分支为 master (针对你的仓库)
           ref: master
-          
-      - uses: gautamkrishnar/keepalive-workflow@v2
-        with:
-          # 强制使用 GITHUB_TOKEN 进行提交
-          use_github_token: true
+      
+      # 2. 核心大招：用原生命令强行提交
+      - name: Manual Commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit --allow-empty -m "Auto keepalive: prevent 60-day inactivity"
+          git push origin master
